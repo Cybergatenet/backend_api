@@ -1,0 +1,27 @@
+{
+  "name": "fundmenaija",
+  "version": "1.2.1",
+  "description": "fundmenaija backend using Nodejs and mongoose",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cybergatenet/backend_api.git"
+  },
+  "keywords": [
+    "fundmenaija",
+    "cybertegate"
+  ],
+  "author": "cybergate",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cybergatenet/backend_api/issues"
+  },
+  "homepage": "https://github.com/Cybergatenet/backend_api#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

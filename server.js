@@ -4,10 +4,9 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import config from './config';
 import userRoute from './routes/userRoute';
-import productRoute from './routes/productRoute';
-import orderRoute from './routes/orderRoute';
 import uploadRoute from './routes/uploadRoute';
 
+// i had to use mongoose, mySQL is also good but if you prefer it, i can as well relink it
 const mongodbUrl = config.MONGODB_URL;
 mongoose
   .connect(mongodbUrl, {
@@ -21,9 +20,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use('/api/uploads', uploadRoute);
 app.use('/api/users', userRoute);
-app.use('/api/products', productRoute);
-app.use('/api/orders', orderRoute);
-app.get('/api/config/paypal', (req, res) => {
+app.use('/api/fund', productRoute);
+app.use('/api/account', orderRoute);
+app.get('/api/config/paystack', (req, res) => {
   res.send(config.PAYPAL_CLIENT_ID);
 });
 app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));

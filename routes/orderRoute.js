@@ -1,69 +1,68 @@
 import express from 'express';
-import Order from '../models/orderModel';
+import Fund from '../models/fundModel';
 import { isAuth, isAdmin } from '../util';
 
 const router = express.Router();
 
 router.get("/", isAuth, async (req, res) => {
-  const orders = await Order.find({}).populate('user');
-  res.send(orders);
+  const funds = await Fund.find({}).populate('user');
+  res.send(funds);
 });
 router.get("/mine", isAuth, async (req, res) => {
-  const orders = await Order.find({ user: req.user._id });
-  res.send(orders);
+  const funds = await Fund.find({ user: req.user._id });
+  res.send(funds);
 });
 
 router.get("/:id", isAuth, async (req, res) => {
-  const order = await Order.findOne({ _id: req.params.id });
-  if (order) {
-    res.send(order);
+  const fund = await Fund.findOne({ _id: req.params.id });
+  if (fund) {
+    res.send(fund);
   } else {
     res.status(404).send("Order Not Found.")
   }
 });
 
 router.delete("/:id", isAuth, isAdmin, async (req, res) => {
-  const order = await Order.findOne({ _id: req.params.id });
-  if (order) {
-    const deletedOrder = await order.remove();
-    res.send(deletedOrder);
+  const fund = await Fund.findOne({ _id: req.params.id });
+  if (fund) {
+    const deletedFund = await fund.remove();
+    res.send(deletedFund);
   } else {
     res.status(404).send("Order Not Found.")
   }
 });
 
 router.post("/", isAuth, async (req, res) => {
-  const newOrder = new Order({
+  const newFund = new Fund({
     orderItems: req.body.orderItems,
     user: req.user._id,
-    shipping: req.body.shipping,
     payment: req.body.payment,
-    itemsPrice: req.body.itemsPrice,
-    taxPrice: req.body.taxPrice,
-    shippingPrice: req.body.shippingPrice,
-    totalPrice: req.body.totalPrice,
+    itemsFund: req.body.itemsFund,
+    taxFund: req.body.taxFund,
+    shippingFund: req.body.shippingFund,
+    totalFund: req.body.totalPrice,
   });
-  const newOrderCreated = await newOrder.save();
-  res.status(201).send({ message: "New Order Created", data: newOrderCreated });
+  const newFundCreated = await newFund.save();
+  res.status(201).send({ message: "New Fund Created", data: newFundCreated });
 });
 
 router.put("/:id/pay", isAuth, async (req, res) => {
-  const order = await Order.findById(req.params.id);
-  if (order) {
-    order.isPaid = true;
-    order.paidAt = Date.now();
-    order.payment = {
+  const fund = await Fund.findById(req.params.id);
+  if (fund) {
+    fund.isPaid = true;
+    fund.paidAt = Date.now();
+    fund.payment = {
       paymentMethod: 'paypal',
       paymentResult: {
         payerID: req.body.payerID,
-        orderID: req.body.orderID,
+        fundID: req.body.fundID,
         paymentID: req.body.paymentID
       }
     }
-    const updatedOrder = await order.save();
-    res.send({ message: 'Order Paid.', order: updatedOrder });
+    const updatedFund = await order.save();
+    res.send({ message: 'Fund Paid.', fund: updatedFund });
   } else {
-    res.status(404).send({ message: 'Order not found.' })
+    res.status(404).send({ message: 'Fund Raiser not found.' })
   }
 });
 
